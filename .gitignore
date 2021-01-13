@@ -1,3 +1,7 @@
 *.sh
 *.swp
 *.bin
+*.o
+*.elf
+*.dep
+*.img
