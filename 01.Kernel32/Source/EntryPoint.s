@@ -155,7 +155,7 @@ GDT:
 		db 0x00
 
 	;IA-32e 모드 커널용 코드 세그먼트 디스크립터
-	CODEDESCRIPTOR:
+	IA_32eCODEDESCRIPTOR:
 		dw 0xFFFF	;Limit	[15:0]
 		dw 0x0000	;Base	[15:0]
 		db 0x00		;Base	[23,16]
@@ -164,7 +164,7 @@ GDT:
 		db 0x00		;Base	[31:24]
 
 	;IA-32e 커널용 데이터 세그먼트 디스크립터
-	DATADESCRIPTOR:
+	IA_32eDATADESCRIPTOR:
 		dw 0xFFFF	;Limit	[15:0]
 		dw 0x0000	;Base	[15:0]
 		db 0x00		;Base	[23:16]

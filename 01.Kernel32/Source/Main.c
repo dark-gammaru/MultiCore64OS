@@ -11,7 +11,7 @@ void Main(void)
 {
 	DWORD i;
 	DWORD dwEAX, dwEBX, dwECX, dwEDX;
-
+	char vcVendorString[13] = {0};
 	kPrintString(0, 3, "C Language Kernel Start...................[Pass]");
 	//최소 메모리 크기 만족하는지 검사
 	kPrintString(0,4,"Minimum Memory Size Check...................[    ]");
@@ -45,7 +45,7 @@ void Main(void)
 
 	*(DWORD*)vcVendorString = dwEBX;
 	*((DWORD*)vcVendorString + 1) = dwEDX;
-	*((DWORD*)vcVendorString + 2+ = dwECX;
+	*((DWORD*)vcVendorString + 2) = dwECX;
 	kPrintString(0,7,"Processor Vendor String.....................[            ]");
 	kPrintString(45, 7, vcVendorString);
 
