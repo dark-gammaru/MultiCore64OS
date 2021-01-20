@@ -1,11 +1,11 @@
-[BITS32]	;ÀÌÇÏ ÄÚµå 32ºñÆ® ÄÚµå·Î ¼³Á¤
+[BITS32]	;ì´í•˜ ì½”ë“œ 32ë¹„íŠ¸ ì½”ë“œë¡œ ì„¤ì •
 
-;C¿¡¼­ È£Ãâ°¡´ÉÇÏµµ·Ï ÀÌ¸§ ³ëÃâ(Export)
+;Cì—ì„œ í˜¸ì¶œê°€ëŠ¥í•˜ë„ë¡ ì´ë¦„ ë…¸ì¶œ(Export)
 global kReadCPUID, kSwitchAndExecute64BitKernel
 
-SECTION .text	;text ¼½¼Ç(¼¼±×¸ÕÆ®) Á¤ÀÇ
+SECTION .text	;text ì„¹ì…˜(ì„¸ê·¸ë¨¼íŠ¸) ì •ì˜
 
-; CPUID¸¦ ¹ÝÈ¯
+; CPUIDë¥¼ ë°˜í™˜
 ; PARAM: DWORD dwEAX, DWORD* pdwEAX,* pdwEBX,* pdeECX,* pdwEDX
 kReadCPUID:
 	push ebp
@@ -17,13 +17,13 @@ kReadCPUID:
 	push esi
 
 	;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-	;EAX ·¹Áö½ºÅÍ °ªÀ¸·Î CPUID ½ÇÇà
+	;EAX ë ˆì§€ìŠ¤í„° ê°’ìœ¼ë¡œ CPUID ì‹¤í–‰
 	;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-	mov eax, dword[ebp + 8]	;ÆÄ¶ó¹ÌÅÍ 1(dwEAX)¸¦ ·¹Áö½ºÅÍ¿¡ ÀúÀå
-	cpuid					;CPUID ¸í·É¾î ½ÇÇà
+	mov eax, dword[ebp + 8]	;íŒŒë¼ë¯¸í„° 1(dwEAX)ë¥¼ ë ˆì§€ìŠ¤í„°ì— ì €ìž¥
+	cpuid					;CPUID ëª…ë ¹ì–´ ì‹¤í–‰
 	
 	;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-	;¹ÝÈ¯µÈ °ªÀ» ÆÄ¶ó¹ÌÅÍ¿¡ ÀúÀå
+	;ë°˜í™˜ëœ ê°’ì„ íŒŒë¼ë¯¸í„°ì— ì €ìž¥
 	;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 	; *pdwEAX
 	mov esi, dword[ebp + 12]
@@ -41,49 +41,49 @@ kReadCPUID:
 	mov esi dword[ebp + 24]
 	mov dword[esi], edx
 
-	pop esi		;ÇÔ¼ö¿¡¼­ »ç¿ë ³¡³­ ·¹Áö½ºÅÍµé °ª º¹¿ø
+	pop esi		;í•¨ìˆ˜ì—ì„œ ì‚¬ìš© ëë‚œ ë ˆì§€ìŠ¤í„°ë“¤ ê°’ ë³µì›
 	pop edx
 	pop ecx
 	pop ebx
 	pop eax
 	pop ebp
-	ret			;ÇÔ¼ö È£ÃâÇÑ ´ÙÀ½ ÄÚµå·Î º¹±Í
+	ret			;í•¨ìˆ˜ í˜¸ì¶œí•œ ë‹¤ìŒ ì½”ë“œë¡œ ë³µê·€
 
-;IA-32e¸ðµå·Î ÀüÈ¯ÇÏ°í 64ºñÆ® Ä¿³Î ¼öÇà
-;PARAM: ¾øÀ½
+;IA-32eëª¨ë“œë¡œ ì „í™˜í•˜ê³  64ë¹„íŠ¸ ì»¤ë„ ìˆ˜í–‰
+;PARAM: ì—†ìŒ
 kSwitchAndExecute64bitKernel
 	;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-	;CR4 ÄÁÆ®·Ñ ·¹Áö½ºÅÍÀÇ PAE ºñÆ® 1·Î ¼³Á¤
+	;CR4 ì»¨íŠ¸ë¡¤ ë ˆì§€ìŠ¤í„°ì˜ PAE ë¹„íŠ¸ 1ë¡œ ì„¤ì •
 	;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 	mov eax, cr4
 	or eax, 0x20
 	mov cr4, eax
 
 	;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-	;CR3 ÄÁÆ®·Ñ ·¹Áö½ºÅÍ¿¡ PML4 Å×ÀÌºíÀÇ ÁÖ¼Ò¿Í Ä³½Ã È°¼ºÈ­
+	;CR3 ì»¨íŠ¸ë¡¤ ë ˆì§€ìŠ¤í„°ì— PML4 í…Œì´ë¸”ì˜ ì£¼ì†Œì™€ ìºì‹œ í™œì„±í™”
 	;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 	mov eax, 0x100000
 	mov cr3, eax
 
 	;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-	;IA32_EFER.LME¸¦ 1·Î ¼³Á¤ÇÏ¿© IA-32e¸ðµå¸¦ È°¼ºÈ­
+	;IA32_EFER.LMEë¥¼ 1ë¡œ ì„¤ì •í•˜ì—¬ IA-32eëª¨ë“œë¥¼ í™œì„±í™”
 	;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-	mov ecx, 0xC0000080	;IA32_EFER MSR ·¹Áö½ºÅÍ ÁÖ¼Ò.
-	rdmsr				;MSR ·¹Áö½ºÅÍ ÀÐ±â. eax ·¹Áö½ºÅÍ·Î ¹ÝÈ¯µÊ.
-	or eax, 0X0100		;LMEºñÆ®(ºñÆ®8) È°¼ºÈ­
+	mov ecx, 0xC0000080	;IA32_EFER MSR ë ˆì§€ìŠ¤í„° ì£¼ì†Œ.
+	rdmsr				;MSR ë ˆì§€ìŠ¤í„° ì½ê¸°. eax ë ˆì§€ìŠ¤í„°ë¡œ ë°˜í™˜ë¨.
+	or eax, 0X0100		;LMEë¹„íŠ¸(ë¹„íŠ¸8) í™œì„±í™”
 	wrmsr
 
 	;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-	;Ä³½Ã, ÆäÀÌÂ¡ ±â´É È°¼ºÈ­
-	;CROÀÇ NW(ºñÆ® 29) = 0, CD(ºñÆ® 30) = 0, PG(ºñÆ® 31) = 1
+	;ìºì‹œ, íŽ˜ì´ì§• ê¸°ëŠ¥ í™œì„±í™”
+	;CROì˜ NW(ë¹„íŠ¸ 29) = 0, CD(ë¹„íŠ¸ 30) = 0, PG(ë¹„íŠ¸ 31) = 1
 	;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 	mov eax, cr0
-	or eax, 0xE0000000	;NW, CD, PG¸¦ ¸ðµÎ 1·Î ¼³Á¤
+	or eax, 0xE0000000	;NW, CD, PGë¥¼ ëª¨ë‘ 1ë¡œ ì„¤ì •
 	xor eax, 0x60000000	;NW = 0, CD = 0, PG = 1
-	mov cr0, eax		;°ª ÀúÀå
+	mov cr0, eax		;ê°’ ì €ìž¥
 
-	jmp 0x08:0x200000	;CS ¼¼±×¸ÕÆ® ¼¿·ºÅÍ¿¡ IA-32e¸ðµå¿ë ÄÚµå ¼¼±×¸ÕÆ® µð½ºÅ©¸³ÅÍ ÇÒ´ç.
-						;0x200000 ÁÖ¼Ò·Î ÀÌµ¿
+	jmp 0x08:0x200000	;CS ì„¸ê·¸ë¨¼íŠ¸ ì…€ë ‰í„°ì— IA-32eëª¨ë“œìš© ì½”ë“œ ì„¸ê·¸ë¨¼íŠ¸ ë””ìŠ¤í¬ë¦½í„° í• ë‹¹.
+						;0x200000 ì£¼ì†Œë¡œ ì´ë™
 
-	;¿©±â´Â ½ÇÇàµÇÁö ¾ÊÀ½
+	;ì—¬ê¸°ëŠ” ì‹¤í–‰ë˜ì§€ ì•ŠìŒ
 	jmp $
