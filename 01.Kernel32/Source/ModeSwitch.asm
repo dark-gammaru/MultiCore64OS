@@ -1,4 +1,4 @@
-[BITS32]	;이하 코드 32비트 코드로 설정
+[BITS 32]	;이하 코드 32비트 코드로 설정
 
 ;C에서 호출가능하도록 이름 노출(Export)
 global kReadCPUID, kSwitchAndExecute64BitKernel
@@ -30,15 +30,15 @@ kReadCPUID:
 	mov dword[esi], eax
 
 	; *pdwEBX
-	mov esi dword[ebp + 16]
+	mov esi, dword[ebp + 16]
 	mov dword[esi], ebx
 
 	; *pdwEBX
-	mov esi dword[ebp + 20]
+	mov esi, dword[ebp + 20]
 	mov dword[esi], ecx
 
 	; *pdwEBX
-	mov esi dword[ebp + 24]
+	mov esi, dword[ebp + 24]
 	mov dword[esi], edx
 
 	pop esi		;함수에서 사용 끝난 레지스터들 값 복원
@@ -51,7 +51,7 @@ kReadCPUID:
 
 ;IA-32e모드로 전환하고 64비트 커널 수행
 ;PARAM: 없음
-kSwitchAndExecute64bitKernel
+kSwitchAndExecute64bitKernel:
 	;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 	;CR4 컨트롤 레지스터의 PAE 비트 1로 설정
 	;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
