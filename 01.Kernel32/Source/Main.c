@@ -52,7 +52,7 @@ void Main(void)
 
 	//64비트 지원 유무 확인
 	kReadCPUID(0x80000001, &dwEAX, &dwEBX, &dwECX, &dwEDX);
-	kPrintString(0, 8, "64bit Mode Support Check..................[    ]");
+	kPrintString(0, 8, "64bit Mode Support Check....................[    ]");
 	if (dwEDX & (1 << 29)) // 비트 29가 1인지 확인
 	{
 		kPrintString(45, 8, "Pass");
@@ -65,7 +65,7 @@ void Main(void)
 	}
 
 	//IA-32e 모드 커널을 0x200000(2MB) 주소로 이동
-	kPrintString(0, 9, "Copy IA-32e Kernel To 2M Address..........[    ]");
+	kPrintString(0, 9, "Copy IA-32e Kernel To 2M Address............[    ]");
 	kCopyKernel64ImageTo2Mbyte();
 	kPrintString(45, 9, "Pass");
 
@@ -146,6 +146,7 @@ void kCopyKernel64ImageTo2Mbyte(void)
 {
 	WORD wKernel32SectorCount, wTotalKernelSectorCount;
 	DWORD* pdwSourceAddress, * pdwDestinationAddress;
+	int i;
 
 	//0x7C05에 총 커널 섹터 수, 0x7C07에 보호모드 커널 섹터수 있음.
 	wTotalKernelSectorCount = *((WORD*)0X7c05);
@@ -153,7 +154,7 @@ void kCopyKernel64ImageTo2Mbyte(void)
 
 	pdwSourceAddress = (DWORD*)(0x10000 + (wKernel32SectorCount * 512));
 	pdwDestinationAddress = (DWORD*)0x200000;
-
+	
 	//IA-32e 모드 커널 섹터 크기만큼 복사
 	for (i = 0; i < 512 * (wTotalKernelSectorCount - wKernel32SectorCount) / 4; i++)
 	{

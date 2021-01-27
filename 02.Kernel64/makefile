@@ -1,8 +1,8 @@
 ##########################################
 #빌드환경 및 규칙
 #########################################
-NASM32 = nasm f elf64
-GCC32 = gcc -c -m64 -ffreestanding
+NASM64 = nasm -f elf64
+GCC64 = gcc -c -m64 -ffreestanding
 LD64 = ld -melf_x86_64 -T ../elf_x86_64.x -nostdlib -e Main -Ttext 0x200000
 OBJCOPY64 = objcopy -j .text -j .data -j .rodata -j .bss -S -O binary
 
@@ -26,7 +26,7 @@ dep:
 ExecuteInternalBuild: dep
 	make -C $(OBJECTDIRECTORY) -f ../makefile Kernel64.elf
 
-Kernel64..bin: ExecuteInternalBuild
+Kernel64.bin: ExecuteInternalBuild
 	$(OBJCOPY64) $(OBJECTDIRECTORY)/Kernel64.elf $@
 
 clean:
@@ -56,12 +56,12 @@ $(ENTRYPOINTOBJECTFILE): $(ENTRYPOINTSOURCEFILE)
 
 # .asm 파일을 .o 파일로 바꾸는 규칙 정의
 %.o: ../$(SOURCEDIRECTORY)/%.asm
-	$(NASM32) -f elf32 -o $@ $<
+	$(NASM64) -o $@ $<
 
 InternalDependency:
 	$(GCC64) -MM $(CSOURCEFILES) > Dependency.dep
 
-Kernel64.elf: $(CENTRYPOINTOBJECTFILE) $(COBJECTFILES) $(ASSEMBLYOBJECTFILES)
+Kernel64.elf: $(ENTRYPOINTOBJECTFILE) $(COBJECTFILES) $(ASSEMBLYOBJECTFILES)
 	$(LD64) -o $@ $^
 
 ifeq (Dependency.dep, $(wildcard Dependency.dep))

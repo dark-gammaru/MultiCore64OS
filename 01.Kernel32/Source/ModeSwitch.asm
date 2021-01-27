@@ -1,7 +1,7 @@
 [BITS 32]	;이하 코드 32비트 코드로 설정
 
 ;C에서 호출가능하도록 이름 노출(Export)
-global kReadCPUID, kSwitchAndExecute64BitKernel
+global kReadCPUID, kSwitchAndExecute64bitKernel
 
 SECTION .text	;text 섹션(세그먼트) 정의
 
